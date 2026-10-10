@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Book - Welcome</title>
+    <!-- Playful handwritten fonts from Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com" rel="stylesheet">
+
+    <style>
+        /* 1. Base Counter Theme Background */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f5f2eb;
+            /* Polka dots a lighter, pastel purple */
+            background-image: radial-gradient(#dcd0ff 15%, transparent 16%);
+            background-size: 60px 60px;
+            font-family: 'Short Stack', cursive;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Quotes designed like prominent cut-out stickers */
+        .kitchen-quote {
+            position: absolute;
+            color: #8a4fff; 
+            background-color: white; 
+            padding: 10px 15px;
+            border: 2px dashed #8a4fff; 
+            border-radius: 12px;
+            font-size: 14px;
+            max-width: 220px;
+            line-height: 1.4;
+            font-style: italic;
+            z-index: 3; /* Kept above floating items */
+            pointer-events: none;
+            box-shadow: 3px 3px 0px rgba(138, 79, 255, 0.15); 
+        }
+        #quote1 { top: 12%; left: 5%; transform: rotate(-8deg); }
+        #quote2 { top: 15%; right: 6%; transform: rotate(6deg); }
+        #quote3 { top: 45%; left: 4%; transform: rotate(10deg); }
+        #quote4 { top: 48%; right: 5%; transform: rotate(-5deg); }
+        #quote5 { bottom: 12%; left: 5%; transform: rotate(-12deg); }
+        #quote6 { bottom: 15%; right: 6%; transform: rotate(8deg); }
+
+        /* Main Welcome Container */
+        .welcome-container {
+            text-align: center;
+            z-index: 10; /* Ensures it stays on top of everything */
+            background: rgba(255, 255, 255, 0.93);
+            padding: 40px;
+            border-radius: 30px;
+            border: 4px dashed #ff7f50;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            max-width: 500px;
+            width: 85%;
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            color: #8a4fff;
+            font-size: 56px;
+            margin: 0 0 10px 0;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 0px #f5f2eb, -1px -1px 0px #f5f2eb, 2px 2px 3px rgba(138, 79, 255, 0.4); 
+            transform: rotate(-1.5deg);
+        }
+
+        p {
+            font-size: 18px;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        /* Let's Get Cooking Button */
+        .cooking-btn {
+            background: #ff7f50;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 22px;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #d55e33;
+            transition: all 0.1s ease;
+        }
+        .cooking-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #d55e33;
+        }
+        .cooking-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #d55e33;
+        }
+
+        /* Floating Ingredients Styling */
+        .floating-emoji {
+            position: absolute;
+            font-size: 32px;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1; /* Floats safely behind the text boxes */
+            animation: floatAnimation var(--duration) ease-in-out infinite alternate;
+        }
+
+        @keyframes floatAnimation {
+            0% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(var(--move-y)) translateX(var(--move-x)) rotate(var(--rot));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticker Quotes -->
+    <div class="kitchen-quote" id="quote1">"Good food is the foundation of genuine happiness." — Auguste Escoffier</div>
+    <div class="kitchen-quote" id="quote2">"You can't cook if you don't like people." — Joël Robuchon</div>
+    <div class="kitchen-quote" id="quote3">"You don't need a silver fork to eat good food." — Paul Prudhomme</div>
+    <div class="kitchen-quote" id="quote4">"I cook for customers." — Gordon Ramsay</div>
+    <div class="kitchen-quote" id="quote5">"Good food is very often, even most often, simple food." — Anthony Bourdain</div>
+    <div class="kitchen-quote" id="quote6">"Cooking is a bit like cinema. It's the emotion that counts." — Anne-Sophie Pic</div>
+
+    <!-- Center Hero Box -->
+    <div class="welcome-container">
+        <h1>recipe book</h1>
+        <p>Your digital scrapbook for delicious, simple meals.</p>
+        <button class="cooking-btn" onclick="location.href='recipes.html'">Let's Get Cooking!</button>
+    </div>
+
+    <script>
+        // Array of kitchen ingredients to float around
+        const ingredients = ['🥞', '🍕', '🍓', '🥑', '🥚', '🧁', '🧀', '🍅', '🍋', '🥕', '🍩', '🍪'];
+        
+        // FIXED: Uniformly spaces out items across a grid system to prevent overlapping
+        const columns = 4;
+        const rows = 4;
+
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < columns; c++) {
+                // Avoid placing items directly in the dead center where the main card lives
+                if ((r === 1 || r === 2) && (c === 1 || c === 2)) continue;
+
+                const emojiEl = document.createElement('div');
+                emojiEl.className = 'floating-emoji';
+                
+                // Shuffle array picking to allow repetition with massive variety
+                emojiEl.innerText = ingredients[Math.floor(Math.random() * ingredients.length)];
+                
+                // Evenly split screen dimensions with a gentle random wiggle room offset
+                const baseLeft = (c / columns) * 100 + (100 / columns / 4);
+                const baseTop = (r / rows) * 100 + (100 / rows / 4);
+                
+                emojiEl.style.left = (baseLeft + (Math.random() * 8 - 4)) + '%';
+                emojiEl.style.top = (baseTop + (Math.random() * 8 - 4)) + '%';
+                
+                // Float animation parameters
+                emojiEl.style.setProperty('--duration', (Math.random() * 3 + 4) + 's');
+                emojiEl.style.setProperty('--move-x', (Math.random() * 30 - 15) + 'px');
+                emojiEl.style.setProperty('--move-y', (Math.random() * -40 - 15) + 'px');
+                emojiEl.style.setProperty('--rot', (Math.random() * 40 - 20) + 'deg');
+                
+                document.body.appendChild(emojiEl);
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
